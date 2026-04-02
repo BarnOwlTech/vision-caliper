@@ -10,7 +10,7 @@ import datetime
 # =============================================================================
 # КОНСТАНТЫ
 # =============================================================================
-ARUCO_MARKER_SIZE_MM = 7.0  # Размер маркера в мм (измерьте после печати!)
+ARUCO_MARKER_SIZE_MM = 23.0  # Размер маркера в мм (измерьте после печати!)
 
 # =============================================================================
 # КАЛИБРОВКА С ARUCO МАРКЕРАМИ
@@ -271,11 +271,9 @@ def analyze_all_objects_logic(img_path, threshold_val, center_dist_threshold=50)
         # Запись в отчет
         report_lines.append(f"\n[Объект #{obj_idx + 1}] ({color_names[color_idx]})")
         report_lines.append(f"  Центр: ({center_x:.1f}, {center_y:.1f})")
-        report_lines.append(f"  Внешний радиус: {outer_radius_px:.2f} пикс. / {outer_radius_mm:.2f} мм")
-        report_lines.append(f"  Внутренний радиус: {inner_radius_px:.2f} пикс. / {inner_radius_mm:.2f} мм")
+        report_lines.append(f"  Внешний димаетр: {outer_radius_px:.2f} пикс. / {outer_radius_mm:.2f} мм")
+        report_lines.append(f"  Внутренний диаметр: {inner_radius_px:.2f} пикс. / {inner_radius_mm:.2f} мм")
         report_lines.append(f"  Толщина стенки: {wall_thickness_px:.2f} пикс. / {wall_thickness_mm:.2f} мм")
-        report_lines.append(f"  Диаметр внешний: {outer_radius_mm * 2:.2f} мм")
-        report_lines.append(f"  Диаметр внутренний: {inner_radius_mm * 2:.2f} мм")
 
         # Визуализация
         color = colors[color_idx]
@@ -289,7 +287,7 @@ def analyze_all_objects_logic(img_path, threshold_val, center_dist_threshold=50)
                     cv2.FONT_HERSHEY_SIMPLEX, 1.0, color, 2)
 
         # Размеры рядом с объектом
-        cv2.putText(image_copy, f"{outer_radius_mm * 2:.1f}mm",
+        cv2.putText(image_copy, f"{outer_radius_mm:.1f}mm",
                     (int(center_x) - 30, int(center_y) + int(outer_radius_px) + 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
 
@@ -322,13 +320,6 @@ class ImageProcessorApp:
         top_frame = tk.Frame(root)
         top_frame.pack(fill=tk.X, padx=10, pady=5)
 
-        info_frame = tk.LabelFrame(top_frame, text="Информация", padx=10, pady=5)
-        info_frame.pack(fill=tk.X, padx=5)
-
-        tk.Label(info_frame, text="📐 Распечатайте ArUco маркеры (generate_markers.py) и разместите по углам",
-                 fg="blue").pack(anchor=tk.W)
-        tk.Label(info_frame, text="📏 Измерьте размер маркера после печати (по умолчанию 30мм)").pack(anchor=tk.W)
-
         settings_frame = tk.LabelFrame(top_frame, text="Параметры", padx=10, pady=5)
         settings_frame.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
@@ -344,7 +335,7 @@ class ImageProcessorApp:
 
         tk.Label(settings_frame, text="Размер маркера (мм): ").grid(row=0, column=4, sticky=tk.W, padx=5)
         self.entry_marker_size = tk.Entry(settings_frame, width=10)
-        self.entry_marker_size.insert(0, "30.0")
+        self.entry_marker_size.insert(0, "23.0")
         self.entry_marker_size.grid(row=0, column=5, padx=5)
 
         btn_frame = tk.Frame(top_frame, padx=10)
